@@ -149,3 +149,14 @@ fruits = ("apple", "banana", "cherry")
 mytuple = fruits * 2
 
 print(mytuple)
+
+# Example 29
+thistuple = ("apple", "banana", "cherry")
+y = list(thistuple)
+y.remove("apple")
+thistuple = tuple(y)
+
+# Example 30
+thistuple = ("apple", "banana", "cherry")
+del thistuple
+print(thistuple) #this will raise an error because the tuple no longer exists
