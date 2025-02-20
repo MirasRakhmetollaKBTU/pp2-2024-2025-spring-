@@ -1,7 +1,5 @@
-import re
+import re 
 
-with open("row.txt", "r", encoding="UTF=8") as file:
-    txt = file.read()
-
-dates = re.findall(r"ab*", txt)
-print(dates)
+txt    = input("Enter : ")
+result = re.search(r"ab*", txt)
+print(result)
