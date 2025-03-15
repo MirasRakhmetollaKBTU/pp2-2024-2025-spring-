@@ -6,7 +6,7 @@ pyg.init()
 screen = pyg.display.set_mode((1400, 1050))
 done   = False
 
-image      = pyg.image.load('png/mickeyclock.png')
+image      = pyg.image.load('png/mickeyclock.jpg')
 long_hand  = pyg.image.load('png/long.png')
 short_hand = pyg.image.load('png/short.png')
 
