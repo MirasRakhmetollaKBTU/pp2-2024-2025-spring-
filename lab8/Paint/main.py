@@ -7,6 +7,7 @@ WIDTH, HEIGHT = 1080, 1080
 
 running = True
 screen  = pg.display.set_mode((WIDTH, HEIGHT))
+pg.display.set_caption("Paint")
 
 Color = [
     (0, 0, 0), # Border
