@@ -269,9 +269,11 @@ class Level:
             return True
 
         for wall in self.walls:
-            if wall.colliderect(food_rect): return False
+            if wall.colliderect(food_rect): return True
  
         return False
+
+larila = Level(1)
 
 # Food class for regular food
 class Food:
@@ -281,9 +283,8 @@ class Food:
         self.rect = pg.Rect(0, 0, size, size)  # Food rectangle
         self.generate_new_postion()  # Set initial position
 
-    def generate_new_postion(self, snake=None, levels=None):
+    def generate_new_postion(self, snake=None):
         """Generate valid food position"""
-        if levels is None: levels     = []  # Default empty levels list
         if snake  is None: snake_body = []  # Default empty snake body
         else: snake_body = snake.body  # Get snake body segments
 
@@ -303,8 +304,12 @@ class Food:
 
 
             if not collision:
-                for level in levels:  # Check wall collision
-                    if level.check_collision_for_food(self.rect):
+                if self.rect.x <= 0 or self.rect.x >= SCREEN_WIDTH - self.size or self.rect.y <= 0 or self.rect.y >= SCREEN_HEIGHT - self.size:
+                    collision = True
+
+            if not collision:
+                for wall in larila.wall1 + larila.wall2 + larila.wall3:
+                    if self.rect.colliderect(wall):
                         collision = True
                         break
 
@@ -331,7 +336,7 @@ class SpecialFood(Food):
         if not self.active:
             self.timer += 1
             if self.timer >= self.spawn_interval:  # Time to spawn
-                self.generate_new_postion(snake, levels)
+                self.generate_new_postion(snake)
                 self.active = True
                 self.timer  = 0
         else:
@@ -340,13 +345,12 @@ class SpecialFood(Food):
                 self.active = False
                 self.timer  = 0
     
-    def generate_new_postion(self, snake=None, levels=None):
+    def generate_new_postion(self, snake=None):
         """Generate valid position (override parent method)"""
-        if levels is None: levels     = []
         if snake  is None: snake_body = []
         else: snake_body = snake.body
 
-        super().generate_new_postion(snake, levels)
+        super().generate_new_postion(snake)
 
     def draw(self, surface):
         """Draw only if active"""
@@ -518,14 +522,14 @@ class Game:
         # Check if snake ate regular food
         if self.snake.body[0].colliderect(self.food.rect):
             self.snake.grow()  # Grow snake
-            self.food.generate_new_postion(self.snake, [self.current_level])  # New food position
+            self.food.generate_new_postion(self.snake)  # New food position
 
         # Check if level completed (score threshold)
         if self.snake.score >= self.player.level * 5:
             self.state = GameState.Win
 
         # Update special food
-        self.special_food.update(self.snake, [self.current_level])
+        self.special_food.update(self.snake)
 
         # Check if snake ate special food
         if (self.special_food.active and self.snake.body[0].colliderect(self.special_food.rect)):
