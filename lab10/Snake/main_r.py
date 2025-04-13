@@ -269,7 +269,7 @@ class Level:
             return True
 
         for wall in self.walls:
-            if wall.colliderect(food_rect): return True
+            if wall.colliderect(food_rect): return False
  
         return False
 
